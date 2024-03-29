@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export const Heading = () => {
     return (
@@ -13,8 +14,10 @@ export const Heading = () => {
             <h3 className="text-base sm:text-xl md:text-2xl font-medium">
                 Notable. empowers users in organizing their ideas, tasks, and projects seamlessly.
             </h3>
-            <Button>
-                Enter Notable. <ArrowRight className="h-4 w-4 ml-2" />
+            <Button asChild>
+                <Link href='/documents'>
+                    Enter Notable. <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
             </Button>
         </div>
     );

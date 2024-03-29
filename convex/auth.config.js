@@ -1,7 +1,7 @@
 export default {
     providers: [
         {
-            domain: "https://beloved-crow-39.clerk.accounts.dev",
+            domain: "https://notable-sailfish-25.clerk.accounts.dev/",
             applicationID: "convex",
         },
     ]
