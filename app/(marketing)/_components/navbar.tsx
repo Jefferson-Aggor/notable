@@ -4,9 +4,8 @@ import { useScrollTop } from "@/hooks/use-scroll-top"
 import { cn } from "@/lib/utils"
 import { Logo } from "./logo"
 import { ModeToggle } from "@/components/mode-toggle"
-import { SignedOut, SignedIn, UserButton, useUser } from "@clerk/nextjs"
+import { SignedOut, SignedIn, UserButton, useUser, SignInButton, SignUpButton } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { Spinner } from "@/components/spinner"
 import { LogInIcon, UserRoundPlusIcon } from "lucide-react"
 
@@ -23,18 +22,19 @@ export const Navbar = () => {
                     )}
 
                     <SignedOut>
-                        <Link href='/sign-up'>
+                        <SignUpButton mode="modal">
                             <Button variant='ghost' size='sm'>
                                 <UserRoundPlusIcon className="h-4 w-4 mr-2" />
                                 Sign Up
                             </Button>
-                        </Link>
-                        <Link href='/sign-in'>
-                            <Button variant='ghost' size='sm'>
+                        </SignUpButton>
+                        <SignInButton mode="modal">
+                            <Button size='sm'>
                                 <LogInIcon className="h-4 w-4 mr-2" />
                                 Login
                             </Button>
-                        </Link>
+                        </SignInButton>
+
                     </SignedOut>
                     <SignedIn>
                         <UserButton afterSignOutUrl="/" />
