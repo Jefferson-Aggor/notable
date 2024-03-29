@@ -36,7 +36,7 @@ export const Navbar = () => {
                         </SignInButton>
 
                     </SignedOut>
-                    <SignedIn>
+                    <SignedIn >
                         <UserButton afterSignOutUrl="/" />
                     </SignedIn>
                 </div>
