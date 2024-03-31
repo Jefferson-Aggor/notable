@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { ElementRef, useRef, useState, useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { UserItem } from "./userItem";
-import { useQuery, useMutation } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Item } from "./item";
 import { toast } from "sonner";
+import { DocumentList } from "./documentList";
 
 export const Navigation = () => {
     const pathname = usePathname()
@@ -30,8 +31,6 @@ export const Navigation = () => {
             error: "Failed to create document"
         })
     }
-    // Queries
-    const documents = useQuery(api.documents.getAllDocuments)
 
     useEffect(() => {
         if (isMobile) collapse()
@@ -135,11 +134,7 @@ export const Navigation = () => {
                     />
                 </div>
                 <div className="mt-4">
-                    {documents?.map(document => {
-                        return (
-                            <p key={document._id}>{document.title}</p>
-                        )
-                    })}
+                    <DocumentList />
                 </div>
                 <div
                     onMouseDown={handleMouseDown}
