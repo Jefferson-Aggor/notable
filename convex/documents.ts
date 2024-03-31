@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server"
 import { v } from "convex/values"
+import { useCheckUser } from "../hooks/check-user"
 
 
 export const getSidebar = query({
@@ -7,14 +8,7 @@ export const getSidebar = query({
         parentDocument: v.optional(v.id("documents"))
     },
     handler: async (ctx, args) => {
-        const identity = await ctx.auth.getUserIdentity();
-
-        if (!identity) {
-            throw new Error("Not authenticated");
-        }
-
-        const userId = identity.subject;
-
+        const userId = useCheckUser();
         const documents = await ctx.db
             .query("documents")
             .withIndex("by_user_parent", (q) =>
@@ -35,13 +29,12 @@ export const getSidebar = query({
 export const createDocument = mutation({
     args: { title: v.string(), parentDocument: v.optional(v.id('documents')) },
     handler: async (ctx, args) => {
-        const identity = await ctx.auth.getUserIdentity();
-        if (!identity) throw new Error('Not authenticated')
+        const userId = useCheckUser()
 
         const document = await ctx.db.insert("documents", {
             title: args.title,
             parentDocument: args.parentDocument,
-            userId: identity.subject,
+            userId,
             isArchived: false,
             isPublished: false
         })
