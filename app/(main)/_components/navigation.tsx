@@ -1,11 +1,15 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { ChevronLeft, MenuIcon } from "lucide-react";
+import { ChevronLeft, MenuIcon, PlusCircle, Search, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ElementRef, useRef, useState, useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { UserItem } from "./userItem";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Item } from "./item";
+import { toast } from "sonner";
 
 export const Navigation = () => {
     const pathname = usePathname()
@@ -15,6 +19,19 @@ export const Navigation = () => {
     const navbarRef = useRef<ElementRef<'div'>>(null)
     const [isResetting, setIsResetting] = useState(false)
     const [isCollapsed, setIsCollapsed] = useState(isMobile)
+
+    // Create Document
+    const createDocument = useMutation(api.documents.createDocument)
+    const onCreateDocument = () => {
+        const promise = createDocument({ title: "Untitled" })
+        toast.promise(promise, {
+            loading: "Creating new document",
+            success: "New document created...",
+            error: "Failed to create document"
+        })
+    }
+    // Queries
+    const documents = useQuery(api.documents.getAllDocuments)
 
     useEffect(() => {
         if (isMobile) collapse()
@@ -100,9 +117,29 @@ export const Navigation = () => {
                 </div>
                 <div>
                     <UserItem />
+                    <Item
+                        label="Search"
+                        icon={Search}
+                        onClick={() => { }}
+                        isSearch
+                    />
+                    <Item
+                        label="Settings"
+                        icon={Settings}
+                        onClick={() => { }}
+                    />
+                    <Item
+                        label="New"
+                        onClick={onCreateDocument}
+                        icon={PlusCircle}
+                    />
                 </div>
                 <div className="mt-4">
-                    <p>Documents</p>
+                    {documents?.map(document => {
+                        return (
+                            <p key={document._id}>{document.title}</p>
+                        )
+                    })}
                 </div>
                 <div
                     onMouseDown={handleMouseDown}

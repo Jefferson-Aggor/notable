@@ -1,5 +1,16 @@
-import { mutation } from "./_generated/server"
+import { mutation, query } from "./_generated/server"
 import { v } from "convex/values"
+
+
+export const getAllDocuments = query({
+    handler: async (ctx) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) throw new Error('Not authenticated')
+
+        const documents = await ctx.db.query('documents').collect()
+        return documents
+    }
+})
 
 export const createDocument = mutation({
     args: { title: v.string(), parentDocument: v.optional(v.id('documents')) },
