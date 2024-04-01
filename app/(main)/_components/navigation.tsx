@@ -17,6 +17,7 @@ import { DocumentList } from "./documentList";
 import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TrashBox } from "./trash-box";
+import { useSettings } from "@/hooks/use-settings";
 
 export const Navigation = () => {
     const pathname = usePathname()
@@ -28,6 +29,7 @@ export const Navigation = () => {
     const [isCollapsed, setIsCollapsed] = useState(isMobile)
 
     const search = useSearch()
+    const settings = useSettings()
 
     // Create Document
     const createDocument = useMutation(api.documents.createDocument)
@@ -133,7 +135,7 @@ export const Navigation = () => {
                     <Item
                         label="Settings"
                         icon={Settings}
-                        onClick={() => { }}
+                        onClick={settings.onOpen}
                     />
                     <Item
                         label="New Page"
