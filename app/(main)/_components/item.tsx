@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/clerk-react";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import { useMutation } from "convex/react";
-import { ChevronDown, ChevronRight, Plus, LucideIcon, MoreHorizontal, Trash, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Plus, LucideIcon, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation"
 import { toast } from "sonner";
 
@@ -21,7 +21,7 @@ interface ItemProps {
     level?: number;
     onExpand?: () => void;
     label: string;
-    onClick: () => void;
+    onClick?: () => void;
     icon: LucideIcon;
 }
 

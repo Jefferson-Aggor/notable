@@ -1,16 +1,21 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { ChevronLeft, MenuIcon, PlusCircle, Search, Settings } from "lucide-react";
+import { ChevronLeft, MenuIcon, PlusCircle, Search, Settings, Trash } from "lucide-react";
+
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import { usePathname } from "next/navigation";
 import { ElementRef, useRef, useState, useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
+
 import { UserItem } from "./userItem";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { Item } from "./item";
-import { toast } from "sonner";
 import { DocumentList } from "./documentList";
+
+import { toast } from "sonner";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { TrashBox } from "./trash-box";
 
 export const Navigation = () => {
     const pathname = usePathname()
@@ -141,6 +146,17 @@ export const Navigation = () => {
                         icon={PlusCircle}
                     />
                 </div>
+                <Popover>
+                    <PopoverTrigger className="w-full mt-4">
+                        <Item label="Trash" icon={Trash} />
+                        <PopoverContent
+                            side={isMobile ? "bottom" : "right"}
+                            className="p-0 w-72"
+                        >
+                            <TrashBox />
+                        </PopoverContent>
+                    </PopoverTrigger>
+                </Popover>
                 <div
                     onMouseDown={handleMouseDown}
                     onClick={resetWidth}
