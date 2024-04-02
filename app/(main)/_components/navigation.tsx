@@ -5,7 +5,7 @@ import { ChevronLeft, MenuIcon, PlusCircle, Search, Settings, Trash } from "luci
 
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { ElementRef, useRef, useState, useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { useSearch } from "@/hooks/use-search";
@@ -18,9 +18,11 @@ import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TrashBox } from "./trash-box";
 import { useSettings } from "@/hooks/use-settings";
+import { Navbar } from "./navbar";
 
 export const Navigation = () => {
     const pathname = usePathname()
+    const params = useParams()
     const isMobile = useMediaQuery("(max-width: 768px)")
     const isResizingRef = useRef(false)
     const sidebarRef = useRef<ElementRef<'aside'>>(null)
@@ -173,12 +175,21 @@ export const Navigation = () => {
                     isMobile && "left-0 w-full"
                 )}
             >
-                <nav className="bg-transparent py-2 px-3 w-full">
-                    {isCollapsed &&
-                        (<MenuIcon
-                            onClick={resetWidth} role="button" className="h-6 w-6 text-muted-foreground" />
-                        )}
-                </nav>
+                {
+                    !!params.documentId ? (
+                        <Navbar
+                            isCollapsed={isCollapsed}
+                            onResetWidth={resetWidth}
+                        />
+                    )
+                        : (<nav className="bg-transparent py-2 px-3 w-full">
+                            {isCollapsed &&
+                                (<MenuIcon
+                                    onClick={resetWidth} role="button" className="h-6 w-6 text-muted-foreground" />
+                                )}
+                        </nav>)
+                }
+
             </div>
         </>
 
