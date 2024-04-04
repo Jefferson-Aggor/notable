@@ -5,7 +5,7 @@ import { ChevronLeft, MenuIcon, PlusCircle, Search, Settings, Trash } from "luci
 
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { ElementRef, useRef, useState, useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { useSearch } from "@/hooks/use-search";
@@ -13,16 +13,17 @@ import { useSearch } from "@/hooks/use-search";
 import { UserItem } from "./userItem";
 import { Item } from "./item";
 import { DocumentList } from "./documentList";
-
-import { toast } from "sonner";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TrashBox } from "./trash-box";
-import { useSettings } from "@/hooks/use-settings";
+import { toast } from "sonner";
 import { Navbar } from "./navbar";
+
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useSettings } from "@/hooks/use-settings";
 
 export const Navigation = () => {
     const pathname = usePathname()
     const params = useParams()
+    const router = useRouter()
     const isMobile = useMediaQuery("(max-width: 768px)")
     const isResizingRef = useRef(false)
     const sidebarRef = useRef<ElementRef<'aside'>>(null)
@@ -37,11 +38,15 @@ export const Navigation = () => {
     const createDocument = useMutation(api.documents.createDocument)
     const onCreateDocument = () => {
         const promise = createDocument({ title: "Untitled" })
+            .then((documentId) => {
+                router.push(`/documents/${documentId}`)
+            })
         toast.promise(promise, {
             loading: "Creating new document",
             success: "New document created...",
             error: "Failed to create document"
         })
+
     }
 
     useEffect(() => {

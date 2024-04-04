@@ -6,13 +6,18 @@ import { useMutation } from "convex/react";
 import { PlusCircle } from "lucide-react";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const Documents = () => {
     const { user } = useUser()
+    const router = useRouter()
     const createDocument = useMutation(api.documents.createDocument)
     const onCreateDocument = () => {
         const promise = createDocument({ title: "Untitled" })
+            .then((documentId) => {
+                router.push(`/documents/${documentId}`)
+            })
         toast.promise(promise, {
             loading: "Creating Document",
             success: "Document Created",
