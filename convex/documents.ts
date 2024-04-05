@@ -196,14 +196,8 @@ export const getSearch = query({
 export const getById = query({
     args: { documentId: v.id('documents') },
     handler: async (ctx, args) => {
-        const identity = await ctx.auth.getUserIdentity()
-        if (!identity) throw new Error('Unauthorized')
-        const userId = identity.subject;
-
         const document = await ctx.db.get(args.documentId)
-
         if (!document) throw new Error("Not found")
-        if (document.userId !== userId) throw new Error('Unauthorized...')
         if (document.isPublished && !document.isArchived) return document
 
         return document
